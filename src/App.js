@@ -21,20 +21,10 @@ function Counter() {
     setCount((c) => c + step);
   }
 
-  function minusStep() {
-    if (step > 1) setStep((s) => s - 1);
-  }
-
-  function addStep() {
-    setStep((s) => s + 1);
-  }
-
   function calculateDate() {
     const today = new Date();
-    console.log(today.getFullYear())
     const targetDate = new Date();
     targetDate.setDate(today.getDate() + count);
-    
     return targetDate.toDateString();
   }
 
@@ -49,6 +39,7 @@ function Counter() {
   }
   function reset() {
     setCount(0);
+    setStep(1);
   }
 
   const displayMessage = getDisplayMessage();
@@ -56,22 +47,44 @@ function Counter() {
   return (
     <>
       <div>
-        <button onClick={minusStep}>-</button>
-        <span>Step: {step}</span>
-        <button onClick={addStep}>+</button>
+        <input
+          type="range"
+          min="1"
+          max="10"
+          value={step}
+          onChange={(e) => setStep(Number(e.target.value))}
+        />
+        Step: {step}
       </div>
 
       <div>
         <button onClick={minusCount}>-</button>
-        <span>Count: {count}</span>
+
+        <input
+          type="text"
+          onChange={(e) => setCount(Number(e.target.value))}
+          value={count}
+        />
         <button onClick={addCount}>+</button>
       </div>
 
       <div>{displayMessage}</div>
 
       <div>
-        <button onClick={reset}>Reset</button>
+        <button
+          style={count == 0 && step == 1 ? { visibility: "hidden" } : {}}
+          onClick={reset}
+        >
+          Reset
+        </button>
       </div>
+
+      
+      {/* {count !== 0 || step !== 1 ? (
+        <div>
+          <button onClick={reset}>Reset</button>
+        </div>
+        ) : null} */}
     </>
   );
 }
